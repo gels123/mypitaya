@@ -1,0 +1,11 @@
+language: go
+
+go:
+  - "1.19"
+
+script:
+  - go get github.com/customerio/gospec
+  - go test -v
+
+services:
+  - redis-server
