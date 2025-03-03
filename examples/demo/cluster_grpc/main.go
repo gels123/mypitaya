@@ -129,7 +129,7 @@ func createApp(port int, isFrontend bool, svType string, meta map[string]string,
 	builder.RPCClient = gc
 
 	if isFrontend {
-		tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", port))
+		tcp := acceptor.NewTcpAcceptor(fmt.Sprintf(":%d", port))
 		builder.AddAcceptor(tcp)
 	}
 

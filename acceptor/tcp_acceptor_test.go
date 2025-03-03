@@ -54,12 +54,12 @@ func TestNewTCPAcceptorGetConnChanAndGetAddr(t *testing.T) {
 					table.panicErr = "invalid certificates: open wqd: The system cannot find the file specified."
 				}
 				assert.PanicsWithError(t, table.panicErr, func() {
-					NewTCPAcceptor(table.addr, table.certs...)
+					NewTcpAcceptor(table.addr, table.certs...)
 				})
 			} else {
-				var a *TCPAcceptor
+				var a *TcpAcceptor
 				assert.NotPanics(t, func() {
-					a = NewTCPAcceptor(table.addr, table.certs...)
+					a = NewTcpAcceptor(table.addr, table.certs...)
 				})
 
 				if len(table.certs) == 2 {
@@ -77,7 +77,7 @@ func TestGetAddr(t *testing.T) {
 	t.Parallel()
 	for _, table := range tcpAcceptorTables {
 		t.Run(table.name, func(t *testing.T) {
-			a := NewTCPAcceptor(table.addr)
+			a := NewTcpAcceptor(table.addr)
 			// returns nothing because not listening yet
 			assert.Equal(t, "", a.GetAddr())
 		})
@@ -88,7 +88,7 @@ func TestGetConnChan(t *testing.T) {
 	t.Parallel()
 	for _, table := range tcpAcceptorTables {
 		t.Run(table.name, func(t *testing.T) {
-			a := NewTCPAcceptor(table.addr)
+			a := NewTcpAcceptor(table.addr)
 			assert.NotNil(t, a.GetConnChan())
 		})
 	}
@@ -97,7 +97,7 @@ func TestGetConnChan(t *testing.T) {
 func TestListenAndServe(t *testing.T) {
 	for _, table := range tcpAcceptorTables {
 		t.Run(table.name, func(t *testing.T) {
-			a := NewTCPAcceptor(table.addr)
+			a := NewTcpAcceptor(table.addr)
 			defer a.Stop()
 			c := a.GetConnChan()
 			go a.ListenAndServe()
@@ -115,7 +115,7 @@ func TestListenAndServe(t *testing.T) {
 func TestListenAndServeTLS(t *testing.T) {
 	for _, table := range tcpAcceptorTables {
 		t.Run(table.name, func(t *testing.T) {
-			a := NewTCPAcceptor(table.addr)
+			a := NewTcpAcceptor(table.addr)
 			defer a.Stop()
 			c := a.GetConnChan()
 
@@ -134,7 +134,7 @@ func TestListenAndServeTLS(t *testing.T) {
 func TestStop(t *testing.T) {
 	for _, table := range tcpAcceptorTables {
 		t.Run(table.name, func(t *testing.T) {
-			a := NewTCPAcceptor(table.addr)
+			a := NewTcpAcceptor(table.addr)
 			go a.ListenAndServe()
 			// should be able to connect within 100 milliseconds
 			helpers.ShouldEventuallyReturn(t, func() error {
@@ -160,7 +160,7 @@ func TestGetNextMessage(t *testing.T) {
 
 	for _, table := range tables {
 		t.Run(table.name, func(t *testing.T) {
-			a := NewTCPAcceptor("0.0.0.0:0")
+			a := NewTcpAcceptor("0.0.0.0:0")
 			go a.ListenAndServe()
 			defer a.Stop()
 			c := a.GetConnChan()
@@ -189,7 +189,7 @@ func TestGetNextMessage(t *testing.T) {
 }
 
 func TestGetNextMessageTwoMessagesInBuffer(t *testing.T) {
-	a := NewTCPAcceptor("0.0.0.0:0")
+	a := NewTcpAcceptor("0.0.0.0:0")
 	go a.ListenAndServe()
 	defer a.Stop()
 	c := a.GetConnChan()
@@ -219,7 +219,7 @@ func TestGetNextMessageTwoMessagesInBuffer(t *testing.T) {
 }
 
 func TestGetNextMessageEOF(t *testing.T) {
-	a := NewTCPAcceptor("0.0.0.0:0")
+	a := NewTcpAcceptor("0.0.0.0:0")
 	go a.ListenAndServe()
 	defer a.Stop()
 	c := a.GetConnChan()
@@ -246,7 +246,7 @@ func TestGetNextMessageEOF(t *testing.T) {
 }
 
 func TestGetNextMessageEmptyEOF(t *testing.T) {
-	a := NewTCPAcceptor("0.0.0.0:0")
+	a := NewTcpAcceptor("0.0.0.0:0")
 	go a.ListenAndServe()
 	defer a.Stop()
 	c := a.GetConnChan()
@@ -270,7 +270,7 @@ func TestGetNextMessageEmptyEOF(t *testing.T) {
 }
 
 func TestGetNextMessageInParts(t *testing.T) {
-	a := NewTCPAcceptor("0.0.0.0:0")
+	a := NewTcpAcceptor("0.0.0.0:0")
 	go a.ListenAndServe()
 	defer a.Stop()
 	c := a.GetConnChan()

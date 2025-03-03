@@ -22,10 +22,10 @@ package acceptor
 
 import "net"
 
-// PlayerConn iface
+// PlayerConn type interface
 type PlayerConn interface {
-	GetNextMessage() (b []byte, err error)
 	RemoteAddr() net.Addr
+	GetNextMessage() (b []byte, err error)
 	net.Conn
 }
 

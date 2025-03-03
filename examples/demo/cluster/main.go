@@ -109,7 +109,7 @@ func main() {
 
 	builder := pitaya.NewDefaultBuilder(*isFrontend, *svType, pitaya.Cluster, map[string]string{}, *config.NewDefaultPitayaConfig())
 	if *isFrontend {
-		tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", *port))
+		tcp := acceptor.NewTcpAcceptor(fmt.Sprintf(":%d", *port))
 		builder.AddAcceptor(tcp)
 	}
 	builder.Groups = groups.NewMemoryGroupService(builder.Config.Groups.Memory)

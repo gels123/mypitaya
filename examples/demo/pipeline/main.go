@@ -101,7 +101,7 @@ func main() {
 	config.DefaultPipelines.StructValidation.Enabled = true
 
 	builder := pitaya.NewDefaultBuilder(*isFrontend, *svType, pitaya.Cluster, map[string]string{}, *config)
-	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", port))
+	tcp := acceptor.NewTcpAcceptor(fmt.Sprintf(":%d", port))
 	builder.AddAcceptor(tcp)
 	builder.HandlerHooks.BeforeHandler.PushBack(metagameServer.simpleBefore)
 	builder.HandlerHooks.AfterHandler.PushBack(metagameServer.simpleAfter)

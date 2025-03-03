@@ -303,7 +303,7 @@ func createApp(serializer string, port int, grpc bool, isFrontend bool, svType s
 	builder := pitaya.NewBuilderWithConfigs(isFrontend, svType, serverMode, metadata, conf)
 
 	if isFrontend {
-		tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", port))
+		tcp := acceptor.NewTcpAcceptor(fmt.Sprintf(":%d", port))
 		builder.AddAcceptor(tcp)
 	}
 

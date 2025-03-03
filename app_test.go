@@ -82,7 +82,7 @@ func TestNewApp(t *testing.T) {
 }
 
 func TestAddAcceptor(t *testing.T) {
-	acc := acceptor.NewTCPAcceptor("0.0.0.0:0")
+	acc := acceptor.NewTcpAcceptor("0.0.0.0:0")
 	for _, table := range tables {
 		t.Run(table.serverType, func(t *testing.T) {
 			builderConfig := config.NewDefaultPitayaConfig()
@@ -269,7 +269,7 @@ func TestDefaultRPCClient(t *testing.T) {
 func TestStartAndListenStandalone(t *testing.T) {
 	builderConfig := config.NewDefaultPitayaConfig()
 
-	acc := acceptor.NewTCPAcceptor("0.0.0.0:0")
+	acc := acceptor.NewTcpAcceptor("0.0.0.0:0")
 	builder := NewDefaultBuilder(true, "testtype", Standalone, map[string]string{}, *builderConfig)
 	builder.AddAcceptor(acc)
 	app := builder.Build().(*App)
@@ -319,7 +319,7 @@ func TestStartAndListenCluster(t *testing.T) {
 	etcdSD, err := cluster.NewEtcdServiceDiscovery(config.NewDefaultPitayaConfig().Cluster.SD.Etcd, builder.Server, builder.DieChan, cli)
 	builder.ServiceDiscovery = etcdSD
 	assert.NoError(t, err)
-	acc := acceptor.NewTCPAcceptor("0.0.0.0:0")
+	acc := acceptor.NewTcpAcceptor("0.0.0.0:0")
 	builder.AddAcceptor(acc)
 	app := builder.Build().(*App)
 

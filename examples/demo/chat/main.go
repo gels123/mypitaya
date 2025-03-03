@@ -100,6 +100,10 @@ func (r *Room) Message(ctx context.Context, msg *UserMessage) {
 	if err != nil {
 		fmt.Println("error broadcasting message", err)
 	}
+	defer func ()  {
+		msg := &UserMessage{Name: "xxxname", Content: "xxxxxtest"}
+		r.app.GroupBroadcast(ctx, "chat", "room", "onMessage", msg)
+	}()
 }
 
 var app pitaya.Pitaya

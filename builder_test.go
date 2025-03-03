@@ -29,7 +29,7 @@ import (
 )
 
 func TestPostBuildHooks(t *testing.T) {
-	acc := acceptor.NewTCPAcceptor("0.0.0.0:0")
+	acc := acceptor.NewTcpAcceptor("0.0.0.0:0")
 	for _, table := range tables {
 		builderConfig := config.NewDefaultPitayaConfig()
 

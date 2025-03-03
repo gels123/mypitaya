@@ -34,7 +34,7 @@ func main() {
 
 	config := config.NewConfig(conf)
 
-	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", *port))
+	tcp := acceptor.NewTcpAcceptor(fmt.Sprintf(":%d", *port))
 
 	builder := pitaya.NewBuilderWithConfigs(*isFrontend, *svType, pitaya.Cluster, map[string]string{}, config)
 	if *isFrontend {
