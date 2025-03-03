@@ -34,8 +34,8 @@ import (
 	"github.com/topfreegames/pitaya/v2/logger"
 )
 
-// WSAcceptor struct
-type WSAcceptor struct {
+// WsAcceptor struct
+type WsAcceptor struct {
 	addr     string
 	connChan chan PlayerConn
 	listener net.Listener
@@ -44,8 +44,8 @@ type WSAcceptor struct {
 	running  bool
 }
 
-// NewWSAcceptor returns a new instance of WSAcceptor
-func NewWSAcceptor(addr string, certs ...string) *WSAcceptor {
+// NewWsAcceptor returns a new instance of WSAcceptor
+func NewWsAcceptor(addr string, certs ...string) *WsAcceptor {
 	keyFile := ""
 	certFile := ""
 	if len(certs) != 2 && len(certs) != 0 {
@@ -55,7 +55,7 @@ func NewWSAcceptor(addr string, certs ...string) *WSAcceptor {
 		keyFile = certs[1]
 	}
 
-	w := &WSAcceptor{
+	w := &WsAcceptor{
 		addr:     addr,
 		connChan: make(chan PlayerConn),
 		certFile: certFile,
@@ -65,16 +65,16 @@ func NewWSAcceptor(addr string, certs ...string) *WSAcceptor {
 	return w
 }
 
-func (w *WSAcceptor) IsRunning() bool {
+func (w *WsAcceptor) IsRunning() bool {
         return w.running
 }
 
-func (w *WSAcceptor) GetConfiguredAddress() string {
+func (w *WsAcceptor) GetConfiguredAddress() string {
         return w.addr
 }
 
 // GetAddr returns the addr the acceptor will listen on
-func (w *WSAcceptor) GetAddr() string {
+func (w *WsAcceptor) GetAddr() string {
 	if w.listener != nil {
 		return w.listener.Addr().String()
 	}
@@ -82,12 +82,12 @@ func (w *WSAcceptor) GetAddr() string {
 }
 
 // GetConnChan gets a connection channel
-func (w *WSAcceptor) GetConnChan() chan PlayerConn {
+func (w *WsAcceptor) GetConnChan() chan PlayerConn {
 	return w.connChan
 }
 
 // PROXY protocol support not implemented for WS acceptor
-func (w *WSAcceptor) EnableProxyProtocol() {
+func (w *WsAcceptor) EnableProxyProtocol() {
 }
 
 type connHandler struct {
@@ -102,7 +102,7 @@ func (h *connHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c, err := NewWSConn(conn)
+	c, err := NewWsConn(conn)
 	if err != nil {
 		logger.Log.Errorf("Failed to create new ws connection: %s", err.Error())
 		return
@@ -110,14 +110,14 @@ func (h *connHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	h.connChan <- c
 }
 
-func (w *WSAcceptor) hasTLSCertificates() bool {
+func (w *WsAcceptor) hasTlsCertificates() bool {
 	return w.certFile != "" && w.keyFile != ""
 }
 
 // ListenAndServe listens and serve in the specified addr
-func (w *WSAcceptor) ListenAndServe() {
-	if w.hasTLSCertificates() {
-		w.ListenAndServeTLS(w.certFile, w.keyFile)
+func (w *WsAcceptor) ListenAndServe() {
+	if w.hasTlsCertificates() {
+		w.ListenAndServeTls(w.certFile, w.keyFile)
 		return
 	}
 
@@ -138,8 +138,8 @@ func (w *WSAcceptor) ListenAndServe() {
 	w.serve(&upgrader)
 }
 
-// ListenAndServeTLS listens and serve in the specified addr using tls
-func (w *WSAcceptor) ListenAndServeTLS(cert, key string) {
+// ListenAndServeTls listens and serve in the specified addr using tls
+func (w *WsAcceptor) ListenAndServeTls(cert, key string) {
 	var upgrader = websocket.Upgrader{
 		ReadBufferSize:  constants.IOBufferBytesSize,
 		WriteBufferSize: constants.IOBufferBytesSize,
@@ -159,7 +159,7 @@ func (w *WSAcceptor) ListenAndServeTLS(cert, key string) {
 	w.serve(&upgrader)
 }
 
-func (w *WSAcceptor) serve(upgrader *websocket.Upgrader) {
+func (w *WsAcceptor) serve(upgrader *websocket.Upgrader) {
 	defer w.Stop()
 
 	http.Serve(w.listener, &connHandler{
@@ -169,7 +169,7 @@ func (w *WSAcceptor) serve(upgrader *websocket.Upgrader) {
 }
 
 // Stop stops the acceptor
-func (w *WSAcceptor) Stop() {
+func (w *WsAcceptor) Stop() {
 	w.running = false
 	err := w.listener.Close()
 	if err != nil {
@@ -185,8 +185,8 @@ type WSConn struct {
 	reader io.Reader
 }
 
-// NewWSConn return an initialized *WSConn
-func NewWSConn(conn *websocket.Conn) (*WSConn, error) {
+// NewWsConn return an initialized *WSConn
+func NewWsConn(conn *websocket.Conn) (*WSConn, error) {
 	c := &WSConn{conn: conn}
 
 	return c, nil

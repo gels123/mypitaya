@@ -381,7 +381,7 @@ func (c *Client) ConnectToWS(addr string, path string, tlsConfig ...*tls.Config)
 		return err
 	}
 
-	c.conn, err = acceptor.NewWSConn(conn)
+	c.conn, err = acceptor.NewWsConn(conn)
 	if err != nil {
 		return err
 	}

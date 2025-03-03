@@ -100,10 +100,10 @@ func (r *Room) Message(ctx context.Context, msg *UserMessage) {
 	if err != nil {
 		fmt.Println("error broadcasting message", err)
 	}
-	defer func ()  {
-		msg := &UserMessage{Name: "xxxname", Content: "xxxxxtest"}
-		r.app.GroupBroadcast(ctx, "chat", "room", "onMessage", msg)
-	}()
+	// defer func ()  {
+	// 	msg := &UserMessage{Name: "xxxname", Content: "xxxxxtest"}
+	// 	r.app.GroupBroadcast(ctx, "chat", "room", "onMessage", msg)
+	// }()
 }
 
 var app pitaya.Pitaya
@@ -111,7 +111,7 @@ var app pitaya.Pitaya
 func main() {
 	conf := configApp()
 	builder := pitaya.NewDefaultBuilder(true, "chat", pitaya.Cluster, map[string]string{}, *conf)
-	builder.AddAcceptor(acceptor.NewWSAcceptor(":3250"))
+	builder.AddAcceptor(acceptor.NewWsAcceptor(":3250"))
 	builder.Groups = groups.NewMemoryGroupService(builder.Config.Groups.Memory)
 	app = builder.Build()
 
